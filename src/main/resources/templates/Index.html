@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hi there</title>
+
+    <!-- Bootstrap CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container-md border mt-3">
+    <div class="row">
+        <div class="col custom-style">Col1</div>
+        <div class="col custom-style">Col2</div>
+        <div class="col custom-style">Col3</div>
+        <div class="col custom-style">Col4</div>
+    </div>
+</div>
+
+<th:block th:fragment="scripts"></th:block>
+
+</body>
+</html>
