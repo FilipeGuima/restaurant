@@ -7,6 +7,7 @@ import kdg.programming3.RestaurantApp.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Profile("jdbc")
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;

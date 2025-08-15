@@ -1,15 +1,30 @@
 package kdg.programming3.RestaurantApp.domain;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Entity
+@Table(name = "ORDERS")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @ManyToOne
+    @JoinColumn(name="customer_id")
     private Customer customer;
+
+    @ManyToMany
+    @JoinTable(
+            name = "ORDER_MENU_ITEM",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_item_id"))
     private List<MenuItem> items;
 
 

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-@Profile({"jdbc", "postgres"})
+@Profile("jdbc")
 
 public class JdbcOrderRepository implements OrderRepository {
 

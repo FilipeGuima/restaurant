@@ -1,17 +1,24 @@
 package kdg.programming3.RestaurantApp.domain;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Entity
 public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstName;
     private String lastName;
     private String email;
-    private List<Order> orders;
     private LocalDate creationDate;
+
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Order> orders;
 
     public Customer(Long id, String firstName, String lastName, String email, LocalDate creationDate) {
         this.id = id;

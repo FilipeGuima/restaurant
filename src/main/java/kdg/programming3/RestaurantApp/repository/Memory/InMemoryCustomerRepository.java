@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-@Profile("dev")
+@Profile("inmemory")
 public class InMemoryCustomerRepository implements CustomerRepository {
 
     @Override

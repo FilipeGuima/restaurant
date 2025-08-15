@@ -1,15 +1,29 @@
 package kdg.programming3.RestaurantApp.domain;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
 public class MenuItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private double price;
-    private List<Allergen> allergens;
     private int calories;
     private String imageName;
+
+    @Enumerated(EnumType.STRING)
     private ItemType itemType;
+
+    @ElementCollection(targetClass = Allergen.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "menu_item_allergens", joinColumns = @JoinColumn(name = "menu_item_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "allergen")
+    private List<Allergen> allergens;
 
     public MenuItem(Long id, String name, double price, List<Allergen> allergens, int calories, String imageName, ItemType itemType) {
         this.id = id;
@@ -19,6 +33,10 @@ public class MenuItem {
         this.calories = calories;
         this.imageName = imageName;
         this.itemType = itemType;
+
+    }
+
+    public MenuItem() {
 
     }
 

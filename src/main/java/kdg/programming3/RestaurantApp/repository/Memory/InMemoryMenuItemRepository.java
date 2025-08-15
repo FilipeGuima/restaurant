@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Profile("dev")
+@Profile("inmemory")
 public class InMemoryMenuItemRepository implements MenuItemRepository {
 
     @Override

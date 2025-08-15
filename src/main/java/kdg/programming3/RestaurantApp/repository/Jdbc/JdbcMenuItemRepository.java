@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-@Profile({"jdbc", "postgres"})
+@Profile("jdbc")
 
 public class JdbcMenuItemRepository implements MenuItemRepository {
 

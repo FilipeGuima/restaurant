@@ -8,6 +8,7 @@ import kdg.programming3.RestaurantApp.repository.CustomerRepository;
 import kdg.programming3.RestaurantApp.repository.MenuItemRepository;
 import kdg.programming3.RestaurantApp.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Profile("jdbc")
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;

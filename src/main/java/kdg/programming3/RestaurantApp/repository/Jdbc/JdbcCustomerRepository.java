@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Profile({"jdbc", "postgres"})
+@Profile("jdbc")
 public class JdbcCustomerRepository implements CustomerRepository {
 
     private final JdbcTemplate jdbcTemplate;
