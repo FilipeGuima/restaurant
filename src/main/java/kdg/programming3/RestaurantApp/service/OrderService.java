@@ -12,4 +12,5 @@ public interface OrderService {
     Optional<Order> getOrdersById(Long restaurantId);
     List<Order> getOrdersByStatus(OrderStatus status);
     Order addOrder(long customerId, List<Long> menuId, OrderStatus orderStatus);
+    void deleteOrder(Long orderId);
 }

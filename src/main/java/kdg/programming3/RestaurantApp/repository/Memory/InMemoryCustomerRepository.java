@@ -29,6 +29,9 @@ public class InMemoryCustomerRepository implements CustomerRepository {
 
     @Override
     public void deleteById(Long id) {
+        InMemoryDataFactory.getOrders().removeIf(order -> order.getCustomer().getId().equals(id));
+
+        InMemoryDataFactory.getCustomers().removeIf(customer -> customer.getId().equals(id));
     }
 
     @Override

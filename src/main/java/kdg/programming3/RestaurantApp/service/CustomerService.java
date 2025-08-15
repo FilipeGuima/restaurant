@@ -12,4 +12,5 @@ public interface CustomerService {
     List<Customer> searchCustomers(String name, String email, LocalDate creationDate, Long id);
     Customer addCustomer(Customer customer);
     List<Customer> findByEmail(String email);
+    void deleteCustomer(Long id);
 }

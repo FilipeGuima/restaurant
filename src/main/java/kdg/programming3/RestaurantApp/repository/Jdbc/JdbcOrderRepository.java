@@ -8,7 +8,6 @@ import kdg.programming3.RestaurantApp.repository.MenuItemRepository;
 import kdg.programming3.RestaurantApp.repository.OrderRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +20,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-@Profile("jdbc")
+@Profile({"jdbc", "postgres"})
+
 public class JdbcOrderRepository implements OrderRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -71,7 +71,6 @@ public class JdbcOrderRepository implements OrderRepository {
 
     @Override
     public Optional<Order> findById(Long id) {
-        // ✅ TYPO FIXED HERE
         List<Order> orders = jdbcTemplate.query("SELECT * FROM ORDERS WHERE id = ?", this::mapOrderRow, id);
         if (orders.isEmpty()) {
             return Optional.empty();

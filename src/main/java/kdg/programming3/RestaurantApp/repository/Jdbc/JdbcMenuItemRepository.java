@@ -16,7 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-@Profile("jdbc")
+@Profile({"jdbc", "postgres"})
+
 public class JdbcMenuItemRepository implements MenuItemRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -29,7 +30,6 @@ public class JdbcMenuItemRepository implements MenuItemRepository {
         String allergensStr = rs.getString("allergens");
         List<Allergen> allergens;
 
-        // ✅ FIXED: This logic now correctly handles empty or null allergen strings.
         if (allergensStr == null || allergensStr.isBlank()) {
             allergens = Collections.emptyList();
         } else {
@@ -43,7 +43,7 @@ public class JdbcMenuItemRepository implements MenuItemRepository {
                 rs.getLong("id"),
                 rs.getString("name"),
                 rs.getDouble("price"),
-                allergens, // Use the safely parsed list
+                allergens,
                 rs.getInt("calories"),
                 rs.getString("image_name"),
                 rs.getString("item_type") != null ? ItemType.valueOf(rs.getString("item_type")) : null
@@ -63,7 +63,6 @@ public class JdbcMenuItemRepository implements MenuItemRepository {
 
     @Override
     public MenuItem save(MenuItem item) {
-        // SimpleJdbcInsert would be better here, but for simplicity:
         jdbcTemplate.update("INSERT INTO MENU_ITEM (name, price, allergens, calories, image_name, item_type) VALUES (?, ?, ?, ?, ?, ?)",
                 item.getName(), item.getPrice(), item.getAllergens().stream().map(Enum::name).collect(Collectors.joining(",")),
                 item.getCalories(), item.getImageName(), item.getItemType().name());

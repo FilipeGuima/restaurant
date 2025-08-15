@@ -31,7 +31,7 @@ public class InMemoryOrderRepository implements OrderRepository {
 
     @Override
     public void deleteById(Long id) {
-// just have it to have it but wont be used for InMemory
+        InMemoryDataFactory.getOrders().removeIf(order -> order.getId().equals(id));
     }
 
     @Override

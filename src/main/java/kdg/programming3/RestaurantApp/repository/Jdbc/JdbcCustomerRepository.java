@@ -12,12 +12,11 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Profile("jdbc")
+@Profile({"jdbc", "postgres"})
 public class JdbcCustomerRepository implements CustomerRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -92,9 +91,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
                 id, id
         );
     }
-
-
-
 
     @Override
     public List<Customer> findByEmail(String email) {

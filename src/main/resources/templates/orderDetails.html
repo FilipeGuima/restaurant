@@ -54,8 +54,10 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item d-flex justify-content-between align-items-center"
               th:each="item : ${order.items}">
-            <span th:text="#{'menu.item.' + ${item.name}}"></span>
-            <span class="badge bg-primary rounded-pill" th:text="${'€' + #numbers.formatDecimal(item.price, 1, 2)}"></span>
+            <a th:href="@{/menu/item/{id}(id=${item.id})}" class="text-decoration-none">
+              <span th:text="#{'menu.item.' + ${item.name}}">Item Name</span>
+            </a>
+            <span class="badge bg-primary rounded-pill" th:text="${'€' + #numbers.formatDecimal(item.price, 1, 2)}">€0.00</span>
           </li>
         </ul>
         <div class="card-footer">

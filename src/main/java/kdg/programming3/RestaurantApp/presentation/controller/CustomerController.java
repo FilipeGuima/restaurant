@@ -88,4 +88,19 @@ public class CustomerController {
         customerService.addCustomer(newCustomer);
         return "redirect:/customers";
     }
+
+    @PostMapping("/{id}/delete")
+    public String deleteCustomer(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        log.debug("POST request to delete customer with id: {}", id);
+        try {
+            customerService.deleteCustomer(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Customer #" + id + " has been deleted successfully.");
+        } catch (Exception e) {
+            log.error("Error deleting customer with id {}: {}", id, e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "An unexpected error occurred while deleting customer #" + id + ".");
+        }
+        return "redirect:/customers";
+    }
+
+
 }

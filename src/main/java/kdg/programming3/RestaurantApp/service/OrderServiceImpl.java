@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -77,6 +78,13 @@ public class OrderServiceImpl implements OrderService {
         log.debug("Saving new order for customer: {}", newOrder.getCustomer().getName());
 
         return orderRepository.save(newOrder);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        log.debug("Deleting order with ID: {}", orderId);
+        orderRepository.deleteById(orderId);
     }
 
 

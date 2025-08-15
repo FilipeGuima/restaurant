@@ -1,5 +1,5 @@
 CREATE TABLE CUSTOMER (
-                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                          id BIGSERIAL PRIMARY KEY,
                           first_name VARCHAR(255) NOT NULL,
                           last_name VARCHAR(255) NOT NULL,
                           email VARCHAR(255) NOT NULL,
@@ -7,9 +7,9 @@ CREATE TABLE CUSTOMER (
 );
 
 CREATE TABLE MENU_ITEM (
-                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                           id BIGSERIAL PRIMARY KEY,
                            name VARCHAR(255) NOT NULL,
-                           price DOUBLE NOT NULL,
+                           price DOUBLE PRECISION NOT NULL,
                            allergens VARCHAR(255),
                            calories INT,
                            image_name VARCHAR(255),
@@ -17,7 +17,7 @@ CREATE TABLE MENU_ITEM (
 );
 
 CREATE TABLE ORDERS (
-                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        id BIGSERIAL PRIMARY KEY,
                         order_date DATE,
                         status VARCHAR(255),
                         customer_id BIGINT,

@@ -168,4 +168,17 @@ public class OrderController {
                 })
                 .orElse("redirect:/orders");
     }
+
+    @PostMapping("/{id}/delete")
+    public String deleteOrder(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        log.debug("POST request to delete order with id: {}", id);
+        try {
+            orderService.deleteOrder(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Order #" + id + " has been deleted successfully.");
+        } catch (Exception e) {
+            log.error("Error deleting order with id: {}", id, e);
+            redirectAttributes.addFlashAttribute("errorMessage", "Error deleting order #" + id + ".");
+        }
+        return "redirect:/orders";
+    }
 }
