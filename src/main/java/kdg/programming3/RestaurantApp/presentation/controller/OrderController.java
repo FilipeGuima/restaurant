@@ -1,7 +1,9 @@
 package kdg.programming3.RestaurantApp.presentation.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import kdg.programming3.RestaurantApp.domain.*;
+import kdg.programming3.RestaurantApp.presentation.viewmodel.OrderViewModel;
 import kdg.programming3.RestaurantApp.service.CustomerService;
 import kdg.programming3.RestaurantApp.service.MenuItemService;
 import kdg.programming3.RestaurantApp.service.OrderService;
@@ -10,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,19 +42,15 @@ public class OrderController {
         log.debug("GET request for orders page with status: {}", status);
 
         List<Order> orders;
-        List<MenuItem> menuItems = menuItemService.getAllMenuItems();
         if (status != null) {
             orders = orderService.getOrdersByStatus(status);
-            log.debug("Found {} orders with status {}", orders.size(), status);
         } else {
             orders = orderService.getAllOrders();
-            log.debug("No status provided ");
         }
 
         model.addAttribute("orders", orders);
         model.addAttribute("statuses", OrderStatus.values());
         model.addAttribute("selectedStatus", status);
-        model.addAttribute("items", menuItems);
         model.addAttribute("page", "orders");
         return "orders";
     }
@@ -61,47 +59,34 @@ public class OrderController {
     public String showAddOrderForm(Model model, HttpSession session) {
         log.debug("Fetching add order form");
 
-        List<Customer> customers = customerService.getAllCustomers();
-        List<MenuItem> menuItems = menuItemService.getAllMenuItems();
+        if (!model.containsAttribute("orderViewModel")) {
+            model.addAttribute("orderViewModel", new OrderViewModel());
+        }
 
-        model.addAttribute("order", new Order());
-        model.addAttribute("customers", customers);
-        model.addAttribute("menuItems", menuItems);
-        model.addAttribute("status", OrderStatus.values());
-        model.addAttribute("itemTypes", ItemType.values());
+        model.addAttribute("customers", customerService.getAllCustomers());
+        model.addAttribute("menuItems", menuItemService.getAllMenuItems());
+        model.addAttribute("allStatuses", OrderStatus.values());
 
         List<Long> cart = (List<Long>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
         }
         model.addAttribute("selectedItemIds", cart);
-
-        model.addAttribute("selectedCustomerId", session.getAttribute("selectedCustomerId"));
-        model.addAttribute("selectedStatus", session.getAttribute("selectedStatus"));
-
         model.addAttribute("page", "addOrder");
+        Object success = session.getAttribute("orderSuccess");
+        if (success != null) {
+            model.addAttribute("orderSuccess", success);
+            session.removeAttribute("orderSuccess");
+        }
         return "addOrder";
-    }
-
-    @PostMapping("/update-details")
-    public String updateOrderDetails(@RequestParam(value = "customerId", required = false) Long customerId,
-                                     @RequestParam(value = "status", required = false) OrderStatus status,
-                                     HttpSession session) {
-        if (customerId != null) {
-            session.setAttribute("selectedCustomerId", customerId);
-            log.debug("Saved customerId {} to session", customerId);
-        }
-        if (status != null) {
-            session.setAttribute("selectedStatus", status);
-            log.debug("Saved status {} to session", status);
-        }
-        return "redirect:/orders/add";
     }
 
     @PostMapping("/clear-cart")
     public String clearCart(HttpSession session) {
         log.info("Clearing all items from cart");
         session.removeAttribute("cart");
+
+        session.setAttribute("orderSuccess", true);
         return "redirect:/orders/add";
     }
 
@@ -109,70 +94,57 @@ public class OrderController {
     @PostMapping("/add-item")
     public String addItemToCart(@RequestParam("itemId") Long itemId, HttpSession session) {
         log.info("Adding item {} to cart", itemId);
-
         List<Long> cart = (List<Long>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
         }
-
         if (!cart.contains(itemId)) {
             cart.add(itemId);
         }
-
         session.setAttribute("cart", cart);
-
         return "redirect:/menu/item/" + itemId;
     }
 
     @PostMapping("/remove-item")
     public String removeItemFromCart(@RequestParam("itemId") Long itemId, HttpSession session) {
         log.info("Removing item {} from cart", itemId);
-
         List<Long> cart = (List<Long>) session.getAttribute("cart");
         if (cart != null) {
             cart.remove(itemId);
-            session.setAttribute("cart", cart);
         }
-
+        session.setAttribute("cart", cart);
         return "redirect:/menu/item/" + itemId;
     }
 
+    @ModelAttribute("orderViewModel") public OrderViewModel populateOrderViewModel(HttpSession session) {
+        OrderViewModel orderViewModel = new OrderViewModel();
+        orderViewModel.setMenuItemIds((List<Long>) session.getAttribute("cart"));
+        return orderViewModel; }
+
     @PostMapping("/add")
-    public String addOrder(HttpSession session,
+    public String addOrder(@Valid @ModelAttribute("orderViewModel") OrderViewModel orderViewModel,
+                           BindingResult bindingResult,
+                           HttpSession session,
                            RedirectAttributes redirectAttributes) {
-        log.debug("Post request for ids");
 
-        Long customerId = (Long) session.getAttribute("selectedCustomerId");
-        OrderStatus status = (OrderStatus) session.getAttribute("selectedStatus");
-        List<Long> menuItemIds = (List<Long>) session.getAttribute("cart");
 
-        List<String> errors = new ArrayList<>();
-
-        if (customerId == null) {
-            errors.add("You must select a customer.");
-
-        }
-
-        if (menuItemIds == null || menuItemIds.isEmpty()) {
-            errors.add("You cannot place an empty order. Please add at least one item.");
-        }
-
-        if (status == null) {
-            errors.add("You cannot have an empty status. Please choose a status.");
-        }
-
-        if (!errors.isEmpty()) {
-            log.warn("Attempted to place order with missing information: {}", errors);
-            redirectAttributes.addFlashAttribute("errors", errors);
+        if (bindingResult.hasErrors()) {
+            log.warn("Validation failed for order submission. Errors: {}", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.orderViewModel", bindingResult);
+            redirectAttributes.addFlashAttribute("orderViewModel", orderViewModel);
             return "redirect:/orders/add";
         }
 
-        log.debug("Creating order for customerId: {}, status: {}, with Menu Item IDs: {}", customerId, status, menuItemIds);
-        orderService.addOrder(customerId, menuItemIds, status);
+        orderService.addOrder(
+                orderViewModel.getCustomer().getId(),
+                orderViewModel.getMenuItemIds(),
+                orderViewModel.getStatus()
+        );
+
 
         session.removeAttribute("cart");
-        session.removeAttribute("selectedCustomerId");
-        session.removeAttribute("selectedStatus");
+
+        session.setAttribute("orderSuccess", true);
 
         return "redirect:/orders";
     }
@@ -180,11 +152,9 @@ public class OrderController {
     @GetMapping("/{id}")
     public String showOrderDetails(@PathVariable("id") Long id, Model model) {
         log.debug("Request for details of order with id: {}", id);
-
         return orderService.getOrdersById(id)
                 .map(order -> {
                     model.addAttribute("order", order);
-
                     double totalPrice = order.getItems().stream()
                             .mapToDouble(MenuItem::getPrice)
                             .sum();

@@ -3,15 +3,14 @@
       th:replace="~{fragment/layout :: layout(title=~{::title}, content=~{::section}, pageScripts=~{::scripts})}">
 <head>
   <meta charset="UTF-8">
-  <title>Order Details</title>
-
+  <title th:text="#{order_details.title}">Order Details</title>
 </head>
 <body>
 <section>
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 th:text="'Order #' + ${order.id}">Order #ID</h1>
+    <h1 th:text="#{order.card.title.prefix} + ${order.id}">Order #ID</h1>
     <a th:href="@{/orders}" class="btn btn-secondary">
-      <i class="bi bi-arrow-left-circle me-1"></i> Back to All Orders
+      <i class="bi bi-arrow-left-circle me-1"></i> <span th:text="#{order_details.back_button}">Back to All Orders</span>
     </a>
   </div>
 
@@ -19,30 +18,30 @@
     <div class="col-lg-7">
       <div class="card shadow-sm mb-4">
         <div class="card-header">
-          <h2>Order Information</h2>
+          <h2 th:text="#{order_details.order_info}">Order Information</h2>
         </div>
         <div class="card-body">
-          <p><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
-          <p><strong>Date Placed:</strong> <span th:text="${#temporals.format(order.date, 'dd MMMM yyyy')}"></span></p>
-          <p><strong>Status:</strong>
+          <p><strong th:text="#{order_details.order_id}">Order ID:</strong> <span th:text="${order.id}"></span></p>
+          <p><strong th:text="#{order_details.date_placed}">Date Placed:</strong> <span th:text="${#temporals.format(order.date, 'dd MMMM yyyy')}"></span></p>
+          <p><strong th:text="#{order_details.status}">Status:</strong>
             <span class="badge rounded-pill fs-6"
-                  th:text="${order.status}"
+                  th:text="#{'enum.OrderStatus.' + ${order.status}}"
                   th:classappend="${order.status.name() == 'PENDING' ? 'text-bg-warning' :
                                                order.status.name() == 'PREPARING' ? 'text-bg-info' :
                                                order.status.name() == 'DELIVERED' ? 'text-bg-success' : 'text-bg-secondary'}">
-                        </span>
+            </span>
           </p>
         </div>
       </div>
 
       <div class="card shadow-sm">
         <div class="card-header">
-          <h2>Customer Information</h2>
+          <h2 th:text="#{order_details.customer_info}">Customer Information</h2>
         </div>
         <div class="card-body">
-          <p><strong>Name:</strong> <span th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></span></p>
-          <p><strong>Email:</strong> <span th:text="${order.customer.email}"></span></p>
-          <p><strong>Customer Since:</strong> <span th:text="${#temporals.format(order.customer.creationDate, 'dd MMMM yyyy')}"></span></p>
+          <p><strong th:text="#{order_details.customer_name}">Name:</strong> <span th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></span></p>
+          <p><strong th:text="#{order_details.customer_email}">Email:</strong> <span th:text="${order.customer.email}"></span></p>
+          <p><strong th:text="#{order_details.customer_since}">Customer Since:</strong> <span th:text="${#temporals.format(order.customer.creationDate, 'dd MMMM yyyy')}"></span></p>
         </div>
       </div>
     </div>
@@ -50,18 +49,18 @@
     <div class="col-lg-5">
       <div class="card shadow-sm">
         <div class="card-header">
-          <h2>Items Ordered</h2>
+          <h2 th:text="#{order_details.items_ordered}">Items Ordered</h2>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item d-flex justify-content-between align-items-center"
               th:each="item : ${order.items}">
-            <span th:text="${item.name}"></span>
+            <span th:text="#{'menu.item.' + ${item.name}}"></span>
             <span class="badge bg-primary rounded-pill" th:text="${'€' + #numbers.formatDecimal(item.price, 1, 2)}"></span>
           </li>
         </ul>
         <div class="card-footer">
           <div class="d-flex justify-content-between align-items-center fw-bold fs-5">
-            <span>Total Price</span>
+            <span th:text="#{order_details.total_price}">Total Price</span>
             <span th:text="${'€' + #numbers.formatDecimal(totalPrice, 1, 2)}"></span>
           </div>
         </div>

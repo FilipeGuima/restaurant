@@ -1,23 +1,37 @@
-// This function waits for the page content to be fully loaded before running.
 document.addEventListener('DOMContentLoaded', function() {
-    // Find the form with the ID 'details-form'
-    const detailsForm = document.getElementById('details-form');
-    if (detailsForm) {
-        // Find the two dropdowns inside that form
+    function resetDropdowns() {
+        console.log("Resetting form dropdowns.");
         const customerSelect = document.getElementById('customerId');
         const statusSelect = document.getElementById('status');
 
-        // This function will be called whenever a dropdown changes
-        const submitForm = () => {
-            detailsForm.submit();
-        };
-
-        // Attach the function to the 'change' event of both dropdowns
         if (customerSelect) {
-            customerSelect.addEventListener('change', submitForm);
+            customerSelect.selectedIndex = null;
         }
         if (statusSelect) {
-            statusSelect.addEventListener('change', submitForm);
+            statusSelect.selectedIndex = null;
+        }
+    }
+
+    const orderForm = document.getElementById('order-form');
+    if (orderForm) {
+        const orderSuccess = orderForm.dataset.orderSuccess === 'true' ;
+        if (orderSuccess) {
+            resetDropdowns();
+        }
+        else {
+            resetDropdowns();
+        }
+    }
+
+    const clearCartForm = document.getElementById('clear-cart-form');
+    if (clearCartForm) {
+        const clearCartButton = clearCartForm.querySelector('button');
+
+        if (clearCartButton) {
+            clearCartButton.addEventListener('click', function() {
+
+                resetDropdowns();
+            });
         }
     }
 });

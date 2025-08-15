@@ -3,13 +3,13 @@
       th:replace="~{fragment/layout :: layout(title=~{::title}, content=~{::section}, pageScripts=~{::scripts})}">
 <head>
     <meta charset="UTF-8">
-    <title>All Customers</title>
+    <title th:text="#{customer.list.title}"></title>
 </head>
 <body>
 <section>
     <div class="card shadow-sm mb-4">
         <div class="card-header">
-            <h1>All Customers</h1>
+            <h1 th:text="#{customer.list.header}"></h1>
         </div>
     </div>
     <div class="card shadow-sm mb-4">
@@ -17,25 +17,20 @@
         <div class="card-body">
             <form th:action="@{/customers}" method="get" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    <label for="name" class="form-label">Filter by Name</label>
+                    <label for="name" class="form-label" th:text="#{customer.list.filter.name}"></label>
                     <input type="text" class="form-control form-control-sm w-75" id="name" name="name" th:value="${name}">
                 </div>
                 <div class="col-md-4">
-                    <label for="email" class="form-label ">Filter by Email</label>
+                    <label for="email" class="form-label" th:text="#{customer.list.filter.email}"></label>
                     <input type="text" class="form-control form-control-sm w-75" id="email" name="email" th:value="${email}">
                 </div>
                 <div class="col-md-2">
-                    <label for="creationDate" class="form-label">Filter by Date</label>
+                    <label for="creationDate" class="form-label" th:text="#{customer.list.filter.date}"></label>
                     <input type="date" class="form-control" id="creationDate" name="creationDate" th:value="${creationDate}">
                 </div>
-<!--                <div class="col-md-2">-->
-<!--                    <label for="id" class="form-label">Filter by Id</label>-->
-<!--                    <input type="number" class="form-control" id="id" name="id" th:value="${id}">-->
-<!--                </div>-->
-
                 <div class="col-md-2 d-flex">
-                    <button type="submit" class="btn btn-primary w-100 me-2">Filter</button>
-                    <a th:href="@{/customers}" class="btn btn-secondary w-100">Clear</a>
+                    <button type="submit" class="btn btn-primary w-100 me-2" th:text="#{customer.list.filter.button}"></button>
+                    <a th:href="@{/customers}" class="btn btn-secondary w-100" th:text="#{customer.list.filter.clear}"></a>
                 </div>
             </form>
         </div>
@@ -48,24 +43,22 @@
                      style="height: 200px; width: 200px; object-fit: cover; margin: 1rem auto 0;">
 
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${customer.name}">Customer Name</h5>
+                    <h5 class="card-title" th:text="${customer.name}"></h5>
                     <p class="card-text text-muted">
                         <i class="bi bi-envelope-fill me-1"></i>
-                        <span th:text="${customer.email}">customer.email@example.com</span>
+                        <span th:text="${customer.email}"></span>
                     </p>
                 </div>
 
                 <div class="card-footer">
-                    <small class="text-muted" th:text="'Customer since: ' + ${#temporals.format(customer.creationDate, 'dd-MMM-yyyy')}">
-                        Customer since...
+                    <small class="text-muted" th:text="#{customer.card.since} + ' ' + ${#temporals.format(customer.creationDate, 'dd-MMM-yyyy')}">
                     </small>
                 </div>
             </div>
         </div>
 
         <div class="col" th:if="${customers.isEmpty()}">
-            <div class="alert alert-info" role="alert">
-                No customers have been added yet.
+            <div class="alert alert-info" role="alert" th:text="#{customer.list.empty}">
             </div>
         </div>
     </div>

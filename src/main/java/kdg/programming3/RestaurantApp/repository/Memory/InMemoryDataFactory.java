@@ -14,19 +14,19 @@ public class InMemoryDataFactory {
     private static final List<Customer> customers = new ArrayList<>();
 
     static {
-        MenuItem chickenPoke = new MenuItem(1L, "Chicken Poke Bowl", 13.50, List.of(Allergen.SOY, Allergen.SESAME, Allergen.GLUTEN), 650,"chicken.png",ItemType.FOOD);
-        MenuItem salmonPoke = new MenuItem(2L, "Salmon Poke Bowl", 15.00, List.of(Allergen.FISH, Allergen.SOY, Allergen.SESAME), 700,"salmon.png",ItemType.FOOD);
-        MenuItem shrimpPoke = new MenuItem(3L, "Shrimp Poke Bowl", 14.50, List.of(Allergen.CRUSTACEANS, Allergen.SOY, Allergen.SESAME), 620,"shrimp.png",ItemType.FOOD);
-        MenuItem tofuPoke = new MenuItem(4L, "Tofu Poke Bowl", 12.50, List.of(Allergen.SOY, Allergen.SESAME, Allergen.GLUTEN), 580,"tofu.png",ItemType.FOOD);
-        MenuItem tunaPoke = new MenuItem(5L, "Tuna Poke Bowl", 15.50, List.of(Allergen.FISH, Allergen.SOY, Allergen.SESAME), 680,"tuna.png",ItemType.FOOD);
+        MenuItem chickenPoke = new MenuItem(1L, "chicken_poke_bowl", 13.50, List.of(Allergen.SOY, Allergen.SESAME, Allergen.GLUTEN), 650,"chicken.png",ItemType.FOOD);
+        MenuItem salmonPoke = new MenuItem(2L, "salmon_poke_bowl", 15.00, List.of(Allergen.FISH, Allergen.SOY, Allergen.SESAME), 700,"salmon.png",ItemType.FOOD);
+        MenuItem shrimpPoke = new MenuItem(3L, "shrimp_poke_bowl", 14.50, List.of(Allergen.CRUSTACEANS, Allergen.SOY, Allergen.SESAME), 620,"shrimp.png",ItemType.FOOD);
+        MenuItem tofuPoke = new MenuItem(4L, "tofu_poke_bowl", 12.50, List.of(Allergen.SOY, Allergen.SESAME, Allergen.GLUTEN), 580,"tofu.png",ItemType.FOOD);
+        MenuItem tunaPoke = new MenuItem(5L, "tuna_poke_bowl", 15.50, List.of(Allergen.FISH, Allergen.SOY, Allergen.SESAME), 680,"tuna.png",ItemType.FOOD);
 
-        MenuItem combo1 = new MenuItem(6L, "Sushi Combo 1", 18.00, List.of(Allergen.FISH, Allergen.CRUSTACEANS, Allergen.SOY), 800,"combo1.png",ItemType.FOOD);
-        MenuItem combo2 = new MenuItem(7L, "Sushi Combo 2", 22.00, List.of(Allergen.FISH, Allergen.CRUSTACEANS, Allergen.SOY), 950,"combo2.png",ItemType.FOOD);
+        MenuItem combo1 = new MenuItem(6L, "sushi_combo_1", 18.00, List.of(Allergen.FISH, Allergen.CRUSTACEANS, Allergen.SOY), 800,"combo1.png",ItemType.FOOD);
+        MenuItem combo2 = new MenuItem(7L, "sushi_combo_2", 22.00, List.of(Allergen.FISH, Allergen.CRUSTACEANS, Allergen.SOY), 950,"combo2.png",ItemType.FOOD);
 
-        MenuItem caipirinha = new MenuItem(8L, "Caipirinha", 9.00, List.of(), 250,"caipirinha.png",ItemType.DRINK);
-        MenuItem espressoMartini = new MenuItem(9L, "Espresso Martini", 11.00, List.of(), 280,"espresso_martini.png",ItemType.DRINK);
-        MenuItem paloma = new MenuItem(10L, "Paloma", 10.00, List.of(), 200,"paloma.png",ItemType.DRINK);
-        MenuItem pinaColada = new MenuItem(11L, "Piña Colada", 10.50, List.of(Allergen.DAIRY), 350,"pina.png",ItemType.DRINK);
+        MenuItem caipirinha = new MenuItem(8L, "caipirinha", 9.00, List.of(), 250,"caipirinha.png",ItemType.DRINK);
+        MenuItem espressoMartini = new MenuItem(9L, "espresso_martini", 11.00, List.of(), 280,"espresso_martini.png",ItemType.DRINK);
+        MenuItem paloma = new MenuItem(10L, "paloma", 10.00, List.of(), 200,"paloma.png",ItemType.DRINK);
+        MenuItem pinaColada = new MenuItem(11L, "pina_colada", 10.50, List.of(Allergen.DAIRY), 350,"pina.png",ItemType.DRINK);
 
         menuItems.addAll(List.of(chickenPoke, salmonPoke, shrimpPoke, tofuPoke, tunaPoke, combo1, combo2, caipirinha, espressoMartini, paloma, pinaColada));
 

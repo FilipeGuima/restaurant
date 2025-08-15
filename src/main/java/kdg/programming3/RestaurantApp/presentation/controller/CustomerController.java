@@ -1,13 +1,14 @@
 package kdg.programming3.RestaurantApp.presentation.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.ui.Model;
 import kdg.programming3.RestaurantApp.domain.Customer;
+import kdg.programming3.RestaurantApp.presentation.viewmodel.CustomerViewModel;
 import kdg.programming3.RestaurantApp.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("customers")
+@RequestMapping("/customers")
 public class CustomerController {
 
     private static final Logger log = LoggerFactory.getLogger(CustomerController.class);
@@ -39,7 +40,6 @@ public class CustomerController {
         List<Customer> customers = customerService.searchCustomers(name, email, creationDate, id);
 
         model.addAttribute("customers", customers);
-
         model.addAttribute("name", name);
         model.addAttribute("email", email);
         model.addAttribute("creationDate", creationDate);
@@ -52,36 +52,40 @@ public class CustomerController {
     public String showAddCustomerForm(Model model) {
         log.debug("Fetching add customer form");
 
-        if (!model.containsAttribute("customer")) {
-            model.addAttribute("customer", new Customer());
-            model.addAttribute("page", "addCustomer");
+        if (!model.containsAttribute("customerViewModel")) {
+            model.addAttribute("customerViewModel", new CustomerViewModel());
         }
+        model.addAttribute("page", "addCustomer");
         return "addCustomer";
     }
 
     @PostMapping("/add")
-    public String addCustomer(@Valid @ModelAttribute("customer") Customer customer,
+    public String addCustomer(@Valid @ModelAttribute("customerViewModel") CustomerViewModel customerViewModel,
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
-        log.debug("POST request to add new customer: {}", customer.getName());
+        log.debug("POST request to add new customer: {}", customerViewModel.getFirstName());
 
         if (bindingResult.hasErrors()) {
-            log.warn("Validation errors found for customer: {}", customer.getName());
-            redirectAttributes.addFlashAttribute("customer", customer);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customer", bindingResult);
+            log.warn("Validation errors found for customer: {}", customerViewModel.getFirstName());
+            redirectAttributes.addFlashAttribute("customerViewModel", customerViewModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerViewModel", bindingResult);
             return "redirect:/customers/add";
         }
 
-        if (!customerService.findByEmail(customer.getEmail()).isEmpty()) {
-            log.warn("Attempted to add customer with existing email: {}", customer.getEmail());
+        if (!customerService.findByEmail(customerViewModel.getEmail()).isEmpty()) {
+            log.warn("Attempted to add customer with existing email: {}", customerViewModel.getEmail());
             bindingResult.rejectValue("email", "email.exists", "This email address is already taken.");
-            redirectAttributes.addFlashAttribute("customer", customer);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customer", bindingResult);
+            redirectAttributes.addFlashAttribute("customerViewModel", customerViewModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerViewModel", bindingResult);
             return "redirect:/customers/add";
         }
 
-        customerService.addCustomer(customer);
+        Customer newCustomer = new Customer();
+        newCustomer.setFirstName(customerViewModel.getFirstName());
+        newCustomer.setLastName(customerViewModel.getLastName());
+        newCustomer.setEmail(customerViewModel.getEmail());
+
+        customerService.addCustomer(newCustomer);
         return "redirect:/customers";
     }
-
 }

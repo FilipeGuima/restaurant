@@ -4,28 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.*;
 
 public class Customer {
     private Long id;
-
-    @NotEmpty(message = "Customer name cannot be empty.")
-    @Size(min = 2, max = 35, message = "Name must be between 2 and 35 characters.")
-    @Pattern(regexp = "^[\\p{L} ]*$", message = "First Name can only contain letters, spaces, and characters .'-")
-    private  String firstName;
-
-    @NotEmpty(message = "Customer name cannot be empty.")
-    @Size(min = 2, max = 35, message = "Name must be between 2 and 35 characters.")
-    @Pattern(regexp = "^[\\p{L} ]*$", message = "Your name should not contain numbers")
-    private  String lastName;
-
-    @NotEmpty(message = "Email cannot be empty")
-    @Email(message = "Please provide a valid email address")
+    private String firstName;
+    private String lastName;
     private String email;
-
     private List<Order> orders;
     private LocalDate creationDate;
 

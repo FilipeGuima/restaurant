@@ -3,9 +3,9 @@
 <body>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 
-<nav class="navbar navbar-expand-lg  mb-4" th:fragment="navbar">
+<nav class="navbar navbar-expand-lg mb-4" th:fragment="navbar">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}"> Guima's Poke</a>
+        <a class="navbar-brand " th:href="@{/home}" th:text="#{nav.brand}" th:classappend="${page == 'home' ? 'active' : ''}"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -14,13 +14,13 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/orders}"
                        th:classappend="${page == 'orders' ? 'active' : ''}">
-                        <i class="bi bi-card-list me-1"></i>All Orders
+                        <i class="bi bi-card-list me-1"></i><span th:text="#{nav.all_orders}">All Orders</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/customers}"
                        th:classappend="${page == 'customers' ? 'active' : ''}">
-                        <i class="bi bi-people-fill me-1"></i>All Customers
+                        <i class="bi bi-people-fill me-1"></i><span th:text="#{nav.all_customers}">All Customers</span>
                     </a>
                 </li>
             </ul>
@@ -28,16 +28,38 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/orders/add}"
                        th:classappend="${page == 'addOrder' ? 'active' : ''}">
-                        <i class="bi bi-plus-circle me-1"></i>Add Order
+                        <i class="bi bi-plus-circle me-1"></i><span th:text="#{nav.add_order}">Add Order</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/customers/add}"
                        th:classappend="${page == 'addCustomer' ? 'active' : ''}">
-                        <i class="bi bi-person-plus-fill me-1"></i>Add Customer
+                        <i class="bi bi-person-plus-fill me-1"></i><span th:text="#{nav.add_customer}">Add Customer</span>
                     </a>
                 </li>
             </ul>
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/history}"
+                       th:classappend="${page == 'history' ? 'active' : ''}">
+                        <i class="bi bi-clock-history me-1"></i><span th:text="#{nav.history}">History</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-globe"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{''(lang='en')}">English</a></li>
+                        <li><a class="dropdown-item" th:href="@{''(lang='pt')}">Português</a></li>
+                    </ul>
+                </li>
+            </ul>
+
         </div>
     </div>
 </nav>
