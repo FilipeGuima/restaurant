@@ -1,37 +1,50 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function resetDropdowns() {
-        console.log("Resetting form dropdowns.");
-        const customerSelect = document.getElementById('customerId');
-        const statusSelect = document.getElementById('status');
+    const customerSelect = document.getElementById('customerId');
+    const statusSelect = document.getElementById('status');
+    const orderSelect = document.getElementById('orderId');
 
-        if (customerSelect) {
-            customerSelect.selectedIndex = null;
+    function restoreSelection(selectElement, storageKey) {
+        if (!selectElement) return;
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+            selectElement.value = saved;
+        } else {
+            selectElement.selectedIndex = 0;
         }
-        if (statusSelect) {
-            statusSelect.selectedIndex = null;
-        }
+
+        selectElement.addEventListener('change', () => {
+            localStorage.setItem(storageKey, selectElement.value);
+        });
     }
 
-    const orderForm = document.getElementById('order-form');
-    if (orderForm) {
-        const orderSuccess = orderForm.dataset.orderSuccess === 'true' ;
-        if (orderSuccess) {
-            resetDropdowns();
+    restoreSelection(customerSelect, 'selectedCustomer');
+    restoreSelection(statusSelect, 'selectedStatus');
+    restoreSelection(orderSelect, 'selectedOrder');
+
+    function resetAll() {
+        if (customerSelect) {
+            customerSelect.selectedIndex = 0;
+            localStorage.removeItem('selectedCustomer');
         }
-        else {
-            resetDropdowns();
+        if (statusSelect) {
+            statusSelect.selectedIndex = 0;
+            localStorage.removeItem('selectedStatus');
         }
+        if (orderSelect) {
+            orderSelect.selectedIndex = 0;
+            localStorage.removeItem('selectedOrder');
+        }
+
+        location.reload();
     }
 
     const clearCartForm = document.getElementById('clear-cart-form');
     if (clearCartForm) {
-        const clearCartButton = clearCartForm.querySelector('button');
-
-        if (clearCartButton) {
-            clearCartButton.addEventListener('click', function() {
-
-                resetDropdowns();
-            });
-        }
+        clearCartForm.addEventListener('submit', () => {
+            localStorage.removeItem('selectedCustomer');
+            localStorage.removeItem('selectedStatus');
+            localStorage.removeItem('selectedItems');
+        });
     }
+
 });

@@ -5,6 +5,7 @@ import kdg.programming3.RestaurantApp.domain.Customer;
 import kdg.programming3.RestaurantApp.domain.Order;
 import kdg.programming3.RestaurantApp.domain.OrderStatus;
 import kdg.programming3.RestaurantApp.repository.OrderRepository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
+@Profile("dev")
 public class InMemoryOrderRepository implements OrderRepository {
 
     @Override

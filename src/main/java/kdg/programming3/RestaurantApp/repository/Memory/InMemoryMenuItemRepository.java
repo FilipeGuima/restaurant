@@ -3,12 +3,14 @@ package kdg.programming3.RestaurantApp.repository.Memory;
 import kdg.programming3.RestaurantApp.Week1.DataFactory;
 import kdg.programming3.RestaurantApp.domain.MenuItem;
 import kdg.programming3.RestaurantApp.repository.MenuItemRepository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Profile("dev")
 public class InMemoryMenuItemRepository implements MenuItemRepository {
 
     @Override

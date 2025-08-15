@@ -2,6 +2,7 @@ package kdg.programming3.RestaurantApp.repository.Memory;
 
 import kdg.programming3.RestaurantApp.repository.CustomerRepository;
 import kdg.programming3.RestaurantApp.domain.Customer;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
+@Profile("dev")
 public class InMemoryCustomerRepository implements CustomerRepository {
 
     @Override
@@ -27,7 +29,6 @@ public class InMemoryCustomerRepository implements CustomerRepository {
 
     @Override
     public void deleteById(Long id) {
-        // just have it to have it but wont be used for InMemory
     }
 
     @Override

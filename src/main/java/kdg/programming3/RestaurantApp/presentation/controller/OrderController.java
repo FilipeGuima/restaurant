@@ -73,11 +73,15 @@ public class OrderController {
         }
         model.addAttribute("selectedItemIds", cart);
         model.addAttribute("page", "addOrder");
-        Object success = session.getAttribute("orderSuccess");
-        if (success != null) {
-            model.addAttribute("orderSuccess", success);
-            session.removeAttribute("orderSuccess");
+
+        Boolean success = (Boolean) session.getAttribute("orderSuccess");
+        session.removeAttribute("orderSuccess");
+
+        if (Boolean.TRUE.equals(success)) {
+            model.addAttribute("orderSuccess", true);
         }
+
+
         return "addOrder";
     }
 

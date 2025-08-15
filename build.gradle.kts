@@ -25,6 +25,8 @@ repositories {
 dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 //	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+	runtimeOnly("com.h2database:h2")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	implementation("org.springframework.boot:spring-boot-starter-integration")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
