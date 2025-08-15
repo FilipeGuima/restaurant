@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragment/layout :: layout(title=~{::title}, content=~{::section}, pageScripts=~{::scripts})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{add_customer.title}">Add a New Customer</title>
+</head>
+<body>
+<section>
+    <div class="card">
+        <div class="card-header">
+            <h1 th:text="#{add_customer.header}">Create a New Customer</h1>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/customers/add}" th:object="${customerViewModel}" method="post">
+
+                <div class="mb-3">
+                    <label for="firstName" class="form-label" th:text="#{add_customer.label.first_name}">First Name:</label>
+                    <input type="text" id="firstName" th:field="*{firstName}" class="form-control" />
+                    <div class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('firstName')}">
+                        <p class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="#{add_customer.error.first_name}">First Name Error:</span></p>
+                        <div th:errors="*{firstName}"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="lastName" class="form-label" th:text="#{add_customer.label.last_name}">Last Name:</label>
+                    <input type="text" id="lastName" th:field="*{lastName}" class="form-control" />
+                    <div class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('lastName')}">
+                        <p class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="#{add_customer.error.last_name}">Last Name Error:</span></p>
+                        <div th:errors="*{lastName}"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label" th:text="#{add_customer.label.email}">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control" />
+                    <div class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('email')}">
+                        <p class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="#{add_customer.error.email}">Email Error:</span></p>
+                        <div th:errors="*{email}"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" th:text="#{add_customer.button.add}">Add Customer</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<th:block th:fragment="scripts"></th:block>
+
+</body>
+</html>

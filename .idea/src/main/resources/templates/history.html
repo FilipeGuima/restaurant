@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragment/layout :: layout(title=~{::title}, content=~{::section}, pageScripts=~{})}">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{history.title}">Session History</title>
+</head>
+<body>
+<section>
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h1 th:text="#{history.header}">Your Session History</h1>
+    </div>
+    <div class="card-body">
+      <p th:text="#{history.description}">This is a list of the pages you have visited in this session.</p>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="item : ${historyItems}">
+          <span th:text="${item.url}"></span>
+          <span class="badge bg-primary rounded-pill" th:text="${item.timestamp}"></span>
+        </li>
+        <li class="list-group-item" th:if="${#lists.isEmpty(historyItems)}">
+          <span th:text="#{history.empty}">Your history is empty.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+</body>
+</html>

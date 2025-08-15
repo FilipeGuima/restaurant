@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragment/layout :: layout(title=~{::title}, content=~{::section}, pageScripts=~{})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{home.title}">Welcome to Guima's Poke</title>
+</head>
+<body>
+<section>
+    <!-- Hero Section -->
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm text-center" id="hero-section">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold" th:text="#{home.hero.title}">Fresh & Delicious Poke Bowls</h1>
+            <p class="fs-4" th:text="#{home.hero.subtitle}">Crafted with the finest ingredients, delivered fresh to you.</p>
+            <a th:href="@{/orders/add}" class="btn btn-primary btn-lg" th:text="#{home.hero.button}">Order Now</a>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="container px-4 py-5">
+        <h2 class="pb-2 border-bottom text-center" th:text="#{home.how_it_works.title}">Quick & Easy Ordering</h2>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="col d-flex align-items-start text-center">
+                <div class="w-100">
+                    <div class="mb-3">
+                        <i class="bi bi-mouse fs-1 text-primary"></i>
+                    </div>
+                    <h3 th:text="#{home.how_it_works.step1.title}">Choose Your Items</h3>
+                    <p th:text="#{home.how_it_works.step1.text}">Browse our menu of delicious poke bowls and drinks.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start text-center">
+                <div class="w-100">
+                    <div class="mb-3">
+                        <i class="bi bi-person-check fs-1 text-primary"></i>
+                    </div>
+                    <h3 th:text="#{home.how_it_works.step2.title}">Select a Customer</h3>
+                    <p th:text="#{home.how_it_works.step2.text}">Add a new customer or select an existing one.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start text-center">
+                <div class="w-100">
+                    <div class="mb-3">
+                        <i class="bi bi-check2-circle fs-1 text-primary"></i>
+                    </div>
+                    <h3 th:text="#{home.how_it_works.step3.title}">Place Your Order</h3>
+                    <p th:text="#{home.how_it_works.step3.text}">Confirm your selection and place your order in seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Items Section -->
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <h2 class="pb-2 mb-4 border-bottom text-center" th:text="#{home.features.title}">Our Most Popular Bowls</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/images/food/salmon.png}" class="card-img-top" alt="Salmon Poke">
+                        <div class="card-body">
+                            <p class="card-text text-center fw-bold" th:text="#{'menu.item.salmon_poke_bowl'}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/images/food/tuna.png}" class="card-img-top" alt="Tuna Poke">
+                        <div class="card-body">
+                            <p class="card-text text-center fw-bold" th:text="#{'menu.item.tuna_poke_bowl'}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/images/food/shrimp.png}" class="card-img-top" alt="Shrimp Poke">
+                        <div class="card-body">
+                            <p class="card-text text-center fw-bold" th:text="#{'menu.item.shrimp_poke_bowl'}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

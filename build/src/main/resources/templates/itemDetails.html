@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragment/layout :: layout(title=~{::title}, content=~{::section}, pageScripts=~{::scripts})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{'menu.item.' + ${item.name}}">Item Details</title>
+</head>
+<body>
+<section>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-5">
+                <img th:src="${item.getItemType().name() == 'FOOD' ? '/images/food/' : '/images/drink/'} + ${item.imageName}"
+                     class="img-fluid rounded shadow-lg" th:alt="${item.name}">
+            </div>
+            <div class="col-md-7">
+                <h1 class="display-4" th:text="#{'menu.item.' + ${item.name}}">Item Name</h1>
+                <h2 class="text-primary" th:text="${'€' + #numbers.formatDecimal(item.price, 1, 'COMMA', 2, 'POINT')}">Price</h2>
+                <hr>
+                <p class="lead" th:text="#{item_details.description}">A delicious and refreshing choice, perfect for any occasion.</p>
+
+                <div class="mb-3">
+                    <span class="badge bg-info me-2 fs-6">
+                        <i class="bi bi-fire me-1"></i>
+                        <span th:text="${item.calories} + ' ' + #{item_details.calories}"></span>
+                    </span>
+                    <span th:if="${!item.allergens.isEmpty()}" class="badge bg-danger fs-6">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                        <span th:text="#{item_details.contains} + ':'">Contains:</span>
+                        <th:block th:each="allergen, iter : ${item.allergens}">
+                            <span th:with="key='enum.Allergen.' + ${allergen}" th:text="' ' + #{${key}}"></span><span th:if="${!iter.last}">,</span>
+                        </th:block>
+                    </span>
+                </div>
+
+                <div class="d-flex mt-4">
+                    <button type="button" class="btn btn-secondary btn-lg me-3" onclick="history.back()">
+                        <i class="bi bi-arrow-left-circle me-1"></i>
+                        <span th:text="#{item_details.button.go_back}">Go Back</span>
+                    </button>
+                    <form th:action="@{/orders/add-item}" method="post" th:if="${!isInCart}">
+                        <input type="hidden" name="itemId" th:value="${item.id}" />
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-plus-circle-fill me-1"></i> <span th:text="#{item_details.button.add_to_order}">Add to Order</span>
+                        </button>
+                    </form>
+                    <form th:action="@{/orders/remove-item}" method="post" th:if="${isInCart}">
+                        <input type="hidden" name="itemId" th:value="${item.id}" />
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="bi bi-trash-fill me-1"></i> <span th:text="#{item_details.button.remove_from_order}">Remove from Order</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<th:block th:fragment="scripts"></th:block>
+
+</body>
+</html>
